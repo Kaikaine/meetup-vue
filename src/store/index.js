@@ -10,14 +10,7 @@ export default new Vuex.Store({
     threads: [],
     meetup: {},
   },
-  getters: {
-    meetups(state) {
-      return state.meetups;
-    },
-    categories(state) {
-      return state.categories;
-    },
-  },
+  getters: {},
   mutations: {
     setMeetups(state, meetups) {
       state.meetups = meetups;
@@ -25,18 +18,40 @@ export default new Vuex.Store({
     setCategories(state, categories) {
       state.categories = categories;
     },
+    setMeetup(state, meetup) {
+      state.meetup = meetup;
+    },
+    setThreads(state, threads) {
+      state.threads = threads;
+    },
   },
   actions: {
-    fetchMeetups(context) {
+    fetchMeetups({ state, commit }) {
       axios.get("api/v1/meetups").then((res) => {
         const meetups = res.data;
-        context.commit("setMeetups", meetups);
+        commit("setMeetups", meetups);
+        return state.meetups;
       });
     },
-    fetchCategories(context) {
+    fetchCategories({ state, commit }) {
       axios.get("api/v1/categories").then((res) => {
         const categories = res.data;
-        context.commit("setCategories", categories);
+        commit("setCategories", categories);
+        return state.meetups;
+      });
+    },
+    fetchMeetupById({ state, commit }, meetupId) {
+      axios.get(`/api/v1/meetups/${meetupId}`).then((res) => {
+        const meetup = res.data;
+        commit("setMeetup", meetup);
+        return state.meetup;
+      });
+    },
+    fetchThreads({ state, commit }, meetupId) {
+      axios.get(`/api/v1/threads?meetupId=${meetupId}`).then((res) => {
+        const threads = res.data;
+        commit("setThreads", threads);
+        return state.threads;
       });
     },
   },
