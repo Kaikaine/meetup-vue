@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <TheNavbar />
+    <TheNavBar />
     <PageHome />
     <TheFooter />
   </div>
 </template>
 
 <script>
-import PageHome from "@/pages/PageHome";
-import TheNavbar from "@/components/shared/TheNavbar";
+import PageHome from "@/views/PageHome";
+import TheNavBar from "@/components/shared/TheNavBar";
 import TheFooter from "@/components/shared/TheFooter";
 export default {
   name: "app",
   components: {
     PageHome,
-    TheNavbar,
+    TheNavBar,
     TheFooter
   }
 };
