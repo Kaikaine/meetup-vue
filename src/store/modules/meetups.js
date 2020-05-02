@@ -17,7 +17,7 @@ export default {
           { resource: "meetups", items: meetups },
           { root: true }
         );
-        return state.meetups;
+        return state.items;
       });
     },
     async fetchMeetupById({ state, commit }, meetupId) {
@@ -29,7 +29,7 @@ export default {
           { resource: "meetups", item: meetup },
           { root: true }
         );
-        return state.meetup;
+        return state.item;
       });
     },
   },

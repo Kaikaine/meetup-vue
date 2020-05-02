@@ -16,7 +16,7 @@ export default {
           { resource: "threads", items: threads },
           { root: true }
         );
-        return state.threads;
+        return state.items;
       });
     },
   },

@@ -15,7 +15,7 @@ export default {
           { resource: "categories", items: categories },
           { root: true }
         );
-        return state.meetups;
+        return state.items;
       });
     },
   },
