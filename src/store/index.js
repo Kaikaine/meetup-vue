@@ -12,45 +12,42 @@ export default new Vuex.Store({
   },
   getters: {},
   mutations: {
-    setMeetups(state, meetups) {
-      state.meetups = meetups;
+    setItems(state, { resource, items }) {
+      state[resource] = items;
     },
-    setCategories(state, categories) {
-      state.categories = categories;
-    },
-    setMeetup(state, meetup) {
-      state.meetup = meetup;
-    },
-    setThreads(state, threads) {
-      state.threads = threads;
+    setItem(state, { resource, item }) {
+      state[resource] = item;
     },
   },
   actions: {
-    fetchMeetups({ state, commit }) {
-      axios.get("api/v1/meetups").then((res) => {
+    async fetchMeetups({ state, commit }) {
+      commit("setItems", { resource: "meetups", items: {} });
+      await axios.get("api/v1/meetups").then((res) => {
         const meetups = res.data;
-        commit("setMeetups", meetups);
+        commit("setItems", { resource: "meetups", items: meetups });
         return state.meetups;
       });
     },
     fetchCategories({ state, commit }) {
       axios.get("api/v1/categories").then((res) => {
         const categories = res.data;
-        commit("setCategories", categories);
+        commit("setItems", { resource: "categories", items: categories });
         return state.meetups;
       });
     },
-    fetchMeetupById({ state, commit }, meetupId) {
-      axios.get(`/api/v1/meetups/${meetupId}`).then((res) => {
+    async fetchMeetupById({ state, commit }, meetupId) {
+      commit("setItem", { resource: "meetup", item: {} });
+      await axios.get(`/api/v1/meetups/${meetupId}`).then((res) => {
         const meetup = res.data;
-        commit("setMeetup", meetup);
+        commit("setItem", { resource: "meetup", item: meetup });
         return state.meetup;
       });
     },
-    fetchThreads({ state, commit }, meetupId) {
-      axios.get(`/api/v1/threads?meetupId=${meetupId}`).then((res) => {
+    async fetchThreads({ state, commit }, meetupId) {
+      commit("setItems", { resource: "threads", items: {} });
+      await axios.get(`/api/v1/threads?meetupId=${meetupId}`).then((res) => {
         const threads = res.data;
-        commit("setThreads", threads);
+        commit("setItems", { resource: "threads", items: threads });
         return state.threads;
       });
     },
