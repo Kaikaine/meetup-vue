@@ -145,8 +145,8 @@ export default {
   name: "PageMeetupDetail",
   computed: {
     ...mapState({
-      meetup: state => state.meetup,
-      threads: state => state.threads
+      meetup: state => state.meetups.item,
+      threads: state => state.threads.items
     }),
     meetupCreator() {
       return this.meetup.meetupCreator || {};
@@ -155,10 +155,11 @@ export default {
   created() {
     const meetupId = this.$route.params.id;
     this.fetchMeetupById(meetupId);
-    this.fetchMeetups(meetupId);
+    this.fetchThreads(meetupId);
   },
   methods: {
-    ...mapActions(["fetchMeetupById", "fetchThreads"])
+    ...mapActions("meetups", ["fetchMeetupById"]),
+    ...mapActions("threads", ["fetchThreads"])
   }
 };
 </script>
