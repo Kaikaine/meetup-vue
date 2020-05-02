@@ -4,6 +4,8 @@ import PageHome from "@/views/PageHome.vue";
 import PageMeetupDetail from "@/views/PageMeetupDetail.vue";
 import PageMeetupFind from "@/views/PageMeetupFind";
 import _PageNotFound from "@/views/_PageNotFound";
+import PageLogin from "@/views/PageLogin";
+import PageRegister from "@/views/PageRegister";
 
 Vue.use(VueRouter);
 
@@ -22,6 +24,16 @@ const routes = [
     path: "/meetups/:id",
     name: "PageMeetupDetail",
     component: PageMeetupDetail,
+  },
+  {
+    path: "/login/",
+    name: "PageLogin",
+    component: PageLogin,
+  },
+  {
+    path: "/register/",
+    name: "PageRegister",
+    component: PageRegister,
   },
   {
     path: "*",
