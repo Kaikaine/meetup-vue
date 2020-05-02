@@ -238,7 +238,20 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      categories: []
+    };
+  },
+
+  created() {
+    axios.get("api/v1/categories").then(res => {
+      this.categories = res.data;
+    });
+  }
+};
 </script>
 
 <style scoped>
