@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import PageHome from "@/views/PageHome.vue";
 import PageMeetupDetail from "@/views/PageMeetupDetail.vue";
 import PageMeetupFind from "@/views/PageMeetupFind";
+import _PageNotFound from "@/views/_PageNotFound";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/meetups/:id",
     name: "PageMeetupDetail",
     component: PageMeetupDetail,
+  },
+  {
+    path: "*",
+    name: "PageNotFound",
+    component: _PageNotFound,
   },
 ];
 

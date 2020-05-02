@@ -1,25 +1,25 @@
 <template>
   <div class="container">
-    <div class="notFoundContainer">
-      <div class="m-b-xxl">
-        <h1 class="title">Ooooops, page you are trying to access doesn't exist'</h1>
-        <router-link :to="{name: PageHome}" class="button is-primary">Navigate back Home</router-link>
-      </div>
-      <h2 class="subtitle">
-        404
-        <span>:(</span>
-      </h2>
-    </div>
+    <ErrorView
+      :title="'Page does not exist'"
+      :status="'404'"
+      :navigateToPage="'/'"
+      :navigateToText="'Navigate back home'"
+    />
   </div>
 </template>
 
 <script>
+import ErrorView from "@/components/ErrorView";
 export default {
-  name: "PageNotFound"
+  name: "PageNotFound",
+  components: {
+    ErrorView
+  }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .title {
   font-size: 40px;
 }
