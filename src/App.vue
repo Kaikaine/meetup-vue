@@ -1,19 +1,17 @@
 <template>
   <div id="app">
     <TheNavBar />
-    <PageHome />
+    <router-view />
     <TheFooter />
   </div>
 </template>
 
 <script>
-import PageHome from "@/views/PageHome";
 import TheNavBar from "@/components/shared/TheNavBar";
 import TheFooter from "@/components/shared/TheFooter";
 export default {
   name: "app",
   components: {
-    PageHome,
     TheNavBar,
     TheFooter
   }
