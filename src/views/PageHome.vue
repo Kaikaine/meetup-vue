@@ -32,6 +32,7 @@
 <script>
 import CategoryItem from "@/components/CategoryItem";
 import MeetupItem from "@/components/MeetupItem";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "PageHome",
   components: {
@@ -39,18 +40,16 @@ export default {
     MeetupItem
   },
   computed: {
-    meetups() {
-      // return this.$store.getters["meetups"];
-      return this.$store.state.meetups;
-    },
-    categories() {
-      // return this.$store.getters["categories"];
-      return this.$store.state.categories;
-    }
+    ...mapState({
+      meetups: state => state.meetups,
+      categories: state => state.categories
+    })
   },
   created() {
-    this.$store.dispatch("fetchMeetups", 10);
-    this.$store.dispatch("fetchCategories");
+    this.fetchMeetups(), this.fetchCategories();
+  },
+  methods: {
+    ...mapActions(["fetchMeetups", "fetchCategories"])
   }
 };
 </script>
