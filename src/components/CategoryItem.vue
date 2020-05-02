@@ -1,5 +1,5 @@
 <template>
-  <div :key="category._id" class="column is-one-quarter" :style="{'min-height': '160px'}">
+  <div class="column is-one-quarter" :style="{'min-height': '160px'}">
     <a href="#">
       <span class="is-primary is-top is-medium tooltip">
         <figure class="image is-4by3 imageFade">
