@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import AppDropdown from "./components/shared/AppDropdown";
 import AppHero from "./components/shared/AppHero";
-
+import store from "./store";
 import moment from "moment";
 
 Vue.config.productionTip = false;
@@ -25,5 +25,6 @@ Vue.filter("formatDate", function(value, formatType = "LL") {
 });
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");

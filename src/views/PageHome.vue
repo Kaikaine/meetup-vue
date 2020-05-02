@@ -32,28 +32,23 @@
 <script>
 import CategoryItem from "@/components/CategoryItem";
 import MeetupItem from "@/components/MeetupItem";
-import axios from "axios";
 export default {
   name: "PageHome",
   components: {
     CategoryItem,
     MeetupItem
   },
-  data() {
-    return {
-      categories: [],
-      meetups: []
-    };
+  computed: {
+    meetups() {
+      return this.$store.getters["meetups"];
+    },
+    categories() {
+      return this.$store.getters["categories"];
+    }
   },
-
   created() {
-    axios.get("api/v1/meetups").then(res => {
-      this.meetups = res.data;
-    });
-
-    axios.get("api/v1/categories").then(res => {
-      this.categories = res.data;
-    });
+    this.$store.dispatch("fetchMeetups");
+    this.$store.dispatch("fetchCategories");
   }
 };
 </script>
