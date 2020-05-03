@@ -6,16 +6,21 @@
         <div class="m-b-lg">
           <h1 class="title is-inline">Featured Meetups in "Location"</h1>
           <AppDropdown />
-          <button class="button is-primary is-pulled-right m-r-sm">
-            Create Meetups
-          </button>
           <router-link
-            to="{name: 'PageMeetupFind'}"
+            v-if="user"
+            :to="{ name: 'PageMeetupCreate' }"
             class="button is-primary is-pulled-right m-r-sm"
-            >All</router-link
+            >Create Meetups</router-link
           >
+          <router-link
+            :to="{ name: 'PageMeetupFind' }"
+            class="button is-primary is-pulled-right m-r-sm"
+          >
+            All
+          </router-link>
         </div>
         <div class="row columns is-multiline">
+          <!-- Iterate your meetups here! -->
           <MeetupItem
             v-for="meetup in meetups"
             :key="meetup._id"
@@ -27,7 +32,6 @@
         <div>
           <h1 class="title">Categories</h1>
           <div class="columns cover is-multiline is-mobile">
-            <!-- Category -->
             <CategoryItem
               v-for="category in categories"
               :key="category._id"
@@ -46,16 +50,18 @@
 <script>
 import CategoryItem from "@/components/CategoryItem";
 import MeetupItem from "@/components/MeetupItem";
+import { mapActions, mapState, mapGetters } from "vuex";
 import pageLoader from "@/mixins/pageLoader";
-import { mapActions, mapState } from "vuex";
 export default {
-  name: "PageHome",
   components: {
     CategoryItem,
     MeetupItem,
   },
   mixins: [pageLoader],
   computed: {
+    ...mapGetters({
+      user: "auth/authUser",
+    }),
     ...mapState({
       meetups: (state) => state.meetups.items,
       categories: (state) => state.categories.items,
@@ -65,17 +71,9 @@ export default {
     Promise.all([this.fetchMeetups(), this.fetchCategories()])
       .then(() => this.pageLoader_resolveData())
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.pageLoader_resolveData();
       });
-    // this.fetchMeetups()
-    //   .then(() => {
-    //     this.fetchCategories();
-    //     return this.fetchCategories();
-    //   })
-    //   .then(() => {
-    //     this.isDataLoaded = true;
-    //   });
   },
   methods: {
     ...mapActions("meetups", ["fetchMeetups"]),

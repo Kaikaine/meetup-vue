@@ -5,6 +5,7 @@ import store from "@/store";
 import PageHome from "@/views/PageHome";
 import PageMeetupDetail from "@/views/PageMeetupDetail";
 import PageMeetupFind from "@/views/PageMeetupFind";
+import PageMeetupCreate from "@/views/PageMeetupCreate";
 import PageLogin from "@/views/PageLogin";
 import PageRegister from "@/views/PageRegister";
 import PageSecret from "@/views/PageSecret";
@@ -24,6 +25,12 @@ const router = new Router({
       path: "/find",
       name: "PageMeetupFind",
       component: PageMeetupFind,
+    },
+    {
+      path: "/meetups/new",
+      name: "PageMeetupCreate",
+      component: PageMeetupCreate,
+      meta: { onlyAuthUser: true },
     },
     {
       path: "/meetups/secret",

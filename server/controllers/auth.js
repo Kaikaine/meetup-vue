@@ -1,5 +1,4 @@
 const passport = require("passport");
-
 // Only for session AUTH!
 // Auth Middleware
 // exports.onlyAuthUser = function (req, res, next) {
