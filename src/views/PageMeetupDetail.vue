@@ -341,9 +341,6 @@ li {
   margin-right: 15px;
 }
 
-.post-item {
-}
-
 .media + .media {
   border: none;
   margin-top: 0;
