@@ -6,14 +6,21 @@
         <div class="m-b-lg">
           <h1 class="title is-inline">Featured Meetups in "Location"</h1>
           <AppDropdown />
-          <button class="button is-primary is-pulled-right m-r-sm">Create Meetups</button>
+          <button class="button is-primary is-pulled-right m-r-sm">
+            Create Meetups
+          </button>
           <router-link
             to="{name: 'PageMeetupFind'}"
             class="button is-primary is-pulled-right m-r-sm"
-          >All</router-link>
+            >All</router-link
+          >
         </div>
         <div class="row columns is-multiline">
-          <MeetupItem v-for="meetup in meetups" :key="meetup._id" :meetup="meetup" />
+          <MeetupItem
+            v-for="meetup in meetups"
+            :key="meetup._id"
+            :meetup="meetup"
+          />
         </div>
       </section>
       <section class="section">
@@ -21,7 +28,11 @@
           <h1 class="title">Categories</h1>
           <div class="columns cover is-multiline is-mobile">
             <!-- Category -->
-            <CategoryItem v-for="category in categories" :key="category._id" :category="category" />
+            <CategoryItem
+              v-for="category in categories"
+              :key="category._id"
+              :category="category"
+            />
           </div>
         </div>
       </section>
@@ -41,19 +52,19 @@ export default {
   name: "PageHome",
   components: {
     CategoryItem,
-    MeetupItem
+    MeetupItem,
   },
   mixins: [pageLoader],
   computed: {
     ...mapState({
-      meetups: state => state.meetups.items,
-      categories: state => state.categories.items
-    })
+      meetups: (state) => state.meetups.items,
+      categories: (state) => state.categories.items,
+    }),
   },
   created() {
     Promise.all([this.fetchMeetups(), this.fetchCategories()])
       .then(() => this.pageLoader_resolveData())
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.pageLoader_resolveData();
       });
@@ -68,10 +79,9 @@ export default {
   },
   methods: {
     ...mapActions("meetups", ["fetchMeetups"]),
-    ...mapActions("categories", ["fetchCategories"])
-  }
+    ...mapActions("categories", ["fetchCategories"]),
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

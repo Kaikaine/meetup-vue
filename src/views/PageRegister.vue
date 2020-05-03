@@ -23,7 +23,8 @@
                     <span
                       v-if="!$v.form.username.required"
                       class="help is-danger"
-                    >Username is required</span>
+                      >Username is required</span
+                    >
                   </div>
                 </div>
               </div>
@@ -37,7 +38,9 @@
                     placeholder="Name"
                   />
                   <div v-if="$v.form.name.$error" class="form-error">
-                    <span v-if="!$v.form.name.required" class="help is-danger">Name is required</span>
+                    <span v-if="!$v.form.name.required" class="help is-danger"
+                      >Name is required</span
+                    >
                   </div>
                 </div>
               </div>
@@ -51,15 +54,17 @@
                     placeholder="Your Email"
                   />
                   <div v-if="$v.form.email.$error" class="form-error">
-                    <span v-if="!$v.form.email.required" class="help is-danger">Email is required</span>
-                    <span
-                      v-if="!$v.form.email.email"
-                      class="help is-danger"
-                    >Email address is not valid</span>
+                    <span v-if="!$v.form.email.required" class="help is-danger"
+                      >Email is required</span
+                    >
+                    <span v-if="!$v.form.email.email" class="help is-danger"
+                      >Email address is not valid</span
+                    >
                     <span
                       v-if="!$v.form.avatar.supportedFileType"
                       class="help is-danger"
-                    >Selected file type is not valid!</span>
+                      >Selected file type is not valid!</span
+                    >
                   </div>
                 </div>
               </div>
@@ -74,7 +79,9 @@
                     autocomplete
                   />
                   <div v-if="$v.form.avatar.$error" class="form-error">
-                    <span v-if="!$v.form.avatar.url" class="help is-danger">Url format is not valid!</span>
+                    <span v-if="!$v.form.avatar.url" class="help is-danger"
+                      >Url format is not valid!</span
+                    >
                   </div>
                 </div>
               </div>
@@ -92,11 +99,13 @@
                     <span
                       v-if="!$v.form.password.required"
                       class="help is-danger"
-                    >Password is required</span>
+                      >Password is required</span
+                    >
                     <span
                       v-if="!$v.form.password.minLength"
                       class="help is-danger"
-                    >Password minimum length is 6 letters</span>
+                      >Password minimum length is 6 letters</span
+                    >
                   </div>
                 </div>
               </div>
@@ -110,15 +119,21 @@
                     placeholder="Password Confirmation"
                     autocomplete="off"
                   />
-                  <div v-if="$v.form.passwordConfirmation.$error" class="form-error">
+                  <div
+                    v-if="$v.form.passwordConfirmation.$error"
+                    class="form-error"
+                  >
                     <span
                       v-if="!$v.form.passwordConfirmation.required"
                       class="help is-danger"
-                    >Password is required</span>
+                      >Password is required</span
+                    >
                     <span
                       v-if="!$v.form.passwordConfirmation.sameAsPassword"
                       class="help is-danger"
-                    >Password confirmation should be the same as password</span>
+                      >Password confirmation should be the same as
+                      password</span
+                    >
                   </div>
                 </div>
               </div>
@@ -126,7 +141,9 @@
                 @click.prevent="register"
                 type="submit"
                 class="button is-block is-info is-large is-fullwidth"
-              >Register</button>
+              >
+                Register
+              </button>
             </form>
           </div>
           <p class="has-text-grey">
@@ -146,7 +163,7 @@ import {
   email,
   minLength,
   url,
-  sameAs
+  sameAs,
 } from "vuelidate/lib/validators";
 import { supportedFileType } from "@/helpers/validators";
 export default {
@@ -159,42 +176,45 @@ export default {
         email: null,
         avatar: null,
         password: null,
-        passwordConfirmation: null
-      }
+        passwordConfirmation: null,
+      },
     };
   },
   validations: {
     form: {
       username: {
-        required
+        required,
       },
       name: {
-        required
+        required,
       },
       email: {
         required,
-        email
+        email,
       },
       avatar: {
         url,
-        supportedFileType
+        supportedFileType,
       },
       password: {
         required,
-        minLength: minLength(6)
+        minLength: minLength(6),
       },
       passwordConfirmation: {
         required,
-        sameAsPassword: sameAs("password")
-      }
-    }
+        sameAsPassword: sameAs("password"),
+      },
+    },
   },
   methods: {
     register() {
       this.$v.form.$touch();
-      this.$store.dispatch("auth/registerUser", this.form);
-    }
-  }
+      this.$store
+        .dispatch("auth/registerUser", this.form)
+        .then(() => this.$router.push("/login"))
+        .catch((err) => console.log(err));
+    },
+  },
 };
 </script>
 
