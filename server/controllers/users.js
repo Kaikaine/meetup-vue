@@ -86,13 +86,14 @@ exports.login = function(req, res, next) {
     }
 
     if (passportUser) {
-      req.login(passportUser, function(err) {
-        if (err) {
-          next(err);
-        }
+      // Only For Session Auth!!!
+      // req.login(passportUser, function (err) {
+      //   if (err) { next(err); }
 
-        return res.json(passportUser);
-      });
+      //   return res.json(passportUser)
+      // });
+
+      return res.json(passportUser.toAuthJSON());
     } else {
       return res.status(422).send({
         errors: {
