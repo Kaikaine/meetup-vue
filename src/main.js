@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 import vuelidate from "vuelidate";
 import Toasted from "vue-toasted";
-import io from "socket.io-client";
+import AppSocket from "./plugins/socket";
 
 import AppDropdown from "./components/shared/AppDropdown";
 import AppHero from "./components/shared/AppHero";
@@ -20,6 +20,7 @@ Vue.component("AppSpinner", AppSpinner);
 
 Vue.use(vuelidate);
 Vue.use(Toasted);
+Vue.use(AppSocket, { connection: "http://localhost:3001" });
 
 Vue.filter("capitalize", function(value) {
   if (value && typeof value === "string") {
@@ -34,8 +35,6 @@ Vue.filter("formatDate", function(value, formatType = "LL") {
 
   return moment(value).format(formatType);
 });
-
-io("http://localhost:3001");
 
 new Vue({
   router,

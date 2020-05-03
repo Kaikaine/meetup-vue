@@ -37,8 +37,7 @@ export default {
         return createdThread;
       });
     },
-    sendPost({ commit, state, dispatch }, { text, threadId }) {
-      console.log(commit, state);
+    sendPost({ dispatch }, { text, threadId }) {
       const post = { text, thread: threadId };
 
       return axiosInstance.post("/api/v1/posts", post).then((res) => {
