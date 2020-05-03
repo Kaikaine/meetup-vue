@@ -3,8 +3,12 @@
     <section class="hero">
       <div class="hero-body">
         <div class="container">
-          <h2 class="subtitle">{{meetup.startDate | formatDate}}</h2>
-          <h1 class="title">{{meetup.title}}</h1>
+          <h2 class="subtitle">
+            {{ meetup.startDate | formatDate }}
+          </h2>
+          <h1 class="title">
+            {{ meetup.title }}
+          </h1>
           <article class="media v-center">
             <figure class="media-left">
               <p class="image is-64x64">
@@ -14,8 +18,7 @@
             <div class="media-content">
               <div class="content">
                 <p>
-                  Created by
-                  <strong>{{meetupCreator.name}}</strong>
+                  Created by <strong>{{ meetupCreator.name }}</strong>
                 </p>
               </div>
             </div>
@@ -34,29 +37,21 @@
             <aside class="is-medium menu">
               <div class="meetup-side-box">
                 <div class="meetup-side-box-date m-b-sm">
-                  <p>
-                    <b>Date</b>
-                  </p>
-                  <p>{{meetup.startDate | formatDate}}</p>
+                  <p><b>Date</b></p>
+                  <p>{{ meetup.startDate | formatDate }}</p>
                 </div>
                 <div class="meetup-side-box-date m-b-sm">
-                  <p>
-                    <b>Time</b>
-                  </p>
-                  <span>{{meetup.timeFrom}}</span> -
-                  <span>{{meetup.timeTo}}</span>
+                  <p><b>Time</b></p>
+                  <span>{{ meetup.timeFrom }}</span> -
+                  <span>{{ meetup.timeTo }}</span>
                 </div>
                 <div class="meetup-side-box-place m-b-sm">
-                  <p>
-                    <b>How to find us</b>
-                  </p>
-                  <p>{{meetup.location}}</p>
+                  <p><b>How to find us</b></p>
+                  <p>{{ meetup.location }}</p>
                 </div>
                 <div class="meetup-side-box-more-info">
-                  <p>
-                    <b>Additional Info</b>
-                  </p>
-                  <p>{{meetup.shortInfo}}</p>
+                  <p><b>Additional Info</b></p>
+                  <p>{{ meetup.shortInfo }}</p>
                 </div>
               </div>
               <div class="meetup-side-box-map">
@@ -67,14 +62,24 @@
                 />
               </div>
               <!-- Threads Start -->
-              <p class="menu-label">Threads</p>
+              <p class="menu-label">
+                Threads
+              </p>
               <ul>
-                <li v-for="thread in threads" :key="thread._id">{{thread.title}}</li>
+                <li v-for="thread in threads" :key="thread._id">
+                  {{ thread.title }}
+                </li>
               </ul>
-              <p class="menu-label">Who is Going</p>
+              <p class="menu-label">
+                Who is Going
+              </p>
               <div class="columns is-multiline is-mobile">
                 <!-- Joined People Images Here -->
-                <div v-for="person in meetup.joinedPeople" :key="person._id" class="column is-3">
+                <div
+                  v-for="person in meetup.joinedPeople"
+                  :key="person._id"
+                  class="column is-3"
+                >
                   <figure class="image is-64x64">
                     <img class="is-rounded" :src="person.avatar" alt="Image" />
                   </figure>
@@ -86,29 +91,39 @@
           <div class="column is-7 is-offset-1">
             <div class="content is-medium">
               <h3 class="title is-3">About the Meetup</h3>
-              <p>{{meetup.description}}</p>
+              <p>{{ meetup.description }}</p>
               <!-- Join Meetup, We will handle it later (: -->
               <button class="button is-primary">Join In</button>
               <!-- Not logged In Case, handle it later (: -->
               <!-- <button :disabled="true"
-              class="button is-warning">You need authenticate in order to join</button>-->
+                      class="button is-warning">You need authenticate in order to join</button> -->
             </div>
             <!-- Thread List START -->
             <div class="content is-medium">
               <h3 class="title is-3">Threads</h3>
               <div v-for="thread in threads" :key="thread._id" class="box">
                 <!-- Thread title -->
-                <h4 id="const" class="title is-3">{{thread.title}}</h4>
+                <h4 id="const" class="title is-3">{{ thread.title }}</h4>
                 <!-- Create new post, handle later -->
                 <form class="post-create">
                   <div class="field">
-                    <textarea class="textarea textarea-post" placeholder="Write a post" rows="1"></textarea>
-                    <button :disabled="true" class="button is-primary m-t-sm">Send</button>
+                    <textarea
+                      class="textarea textarea-post"
+                      placeholder="Write a post"
+                      rows="1"
+                    ></textarea>
+                    <button :disabled="true" class="button is-primary m-t-sm">
+                      Send
+                    </button>
                   </div>
                 </form>
                 <!-- Create new post END, handle later -->
                 <!-- Posts START -->
-                <article v-for="post in thread.posts" :key="post._id" class="media post-item">
+                <article
+                  v-for="post in thread.posts"
+                  :key="post._id"
+                  class="media post-item"
+                >
                   <figure class="media-left is-rounded user-image">
                     <p class="image is-32x32">
                       <img class="is-rounded" :src="post.user.avatar" />
@@ -118,12 +133,14 @@
                     <div class="content is-medium">
                       <div class="post-content">
                         <!-- Post User Name -->
-                        <strong class="author">{{post.user.name}}</strong>
-                        {{' '}}
+                        <strong class="author">{{ post.user.name }}</strong>
+                        {{ " " }}
                         <!-- Post Updated at -->
-                        <small class="post-time">{{post.updatedAt | formatDate('LLL')}}</small>
+                        <small class="post-time">{{
+                          post.updatedAt | formatDate("LLL")
+                        }}</small>
                         <br />
-                        <p class="post-content-message">{{post.text}}</p>
+                        <p class="post-content-message">{{ post.text }}</p>
                       </div>
                     </div>
                   </div>
@@ -142,15 +159,26 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
-  name: "PageMeetupDetail",
   computed: {
     ...mapState({
-      meetup: state => state.meetups.item,
-      threads: state => state.threads.items
+      meetup: (state) => state.meetups.item,
+      threads: (state) => state.threads.items,
     }),
     meetupCreator() {
       return this.meetup.meetupCreator || {};
-    }
+    },
+    isAuthenticated() {
+      return this.$store.getters["auth/isAuthenticated"];
+    },
+    isMeetupOwner() {
+      return this.$store.getters["auth/isMeetupOwner"](this.meetupCreator._id);
+    },
+    isMember() {
+      return this.$store.getters["auth/isMember"](this.meetup._id);
+    },
+    canJoin() {
+      return !this.isMeetupOwner && this.isAuthenticated && !this.isMember;
+    },
   },
   created() {
     const meetupId = this.$route.params.id;
@@ -159,17 +187,19 @@ export default {
   },
   methods: {
     ...mapActions("meetups", ["fetchMeetupById"]),
-    ...mapActions("threads", ["fetchThreads"])
-  }
+    ...mapActions("threads", ["fetchThreads"]),
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .tag.is-warning {
   opacity: 0.5;
 }
+
 .meetup-detail-page {
   background-color: #f5f5f5;
+
   .mapouter {
     text-align: right;
     height: 500px;
@@ -181,6 +211,7 @@ export default {
     height: 500px;
     width: 600px;
   }
+
   .hero-body {
     background-color: white;
     border: 1px solid rgba(46, 62, 72, 0.12);
@@ -190,6 +221,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+
     > p,
     h1,
     h2,
@@ -197,6 +229,7 @@ export default {
       color: white;
     }
   }
+
   .meetup-side-box {
     background-color: white;
     border-radius: 10px;
@@ -204,40 +237,51 @@ export default {
     padding: 15px;
   }
 }
+
 pre,
 .message {
   max-width: 960px;
 }
+
 .v-center {
   align-items: center;
 }
+
 li {
   margin: 10px;
 }
+
 .hero.is-primary {
   background: linear-gradient(to top right, #524ad0 10%, #d099fa);
 }
+
 .box {
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
 }
+
 .box span.icon {
   float: right;
   font-size: 1.7em;
   padding: 2rem 2rem 0 0;
 }
+
 .is-large.fab {
   font-size: 7em;
 }
+
 .is-large.fas {
   font-size: 5em;
   margin-left: 0.2em;
 }
+
 .media-content {
   overflow: hidden;
 }
+
 .menu-list li a:hover {
   background: #d9d9d9;
 }
+
 .token.number {
   display: inline;
   padding: inherit;
@@ -254,20 +298,24 @@ li {
 .footer {
   background-color: white;
 }
+
 // Post Create Input START
 .textarea-post {
   padding-bottom: 30px;
 }
+
 .post-create {
   margin-bottom: 15px;
 }
 // Post Create END
+
 // Thread List START
 .content {
   figure {
     margin-bottom: 0;
   }
 }
+
 .media-content-threads {
   background-color: #f1f1f1;
   padding: 3px 20px;
@@ -275,26 +323,33 @@ li {
   margin-right: 40px;
   width: 100px;
 }
+
 .media-left.user-image {
   margin: 0;
   margin-right: 15px;
 }
+
 .post-item {
 }
+
 .media + .media {
   border: none;
   margin-top: 0;
 }
+
 .post-content {
   margin: 0;
   &-message {
     font-size: 16px;
   }
+
   .author {
     font-size: 18px;
   }
+
   .post-time {
     font-size: 16px;
   }
 }
+// Thread List END
 </style>
