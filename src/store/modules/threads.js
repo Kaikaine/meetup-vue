@@ -1,24 +1,17 @@
-import axios from "axios";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-export default {
-  namespaced: true,
-  state: {
-    items: [],
+const threadSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    maxlength: [512, "Too long, max is 512 characters"],
   },
-  getters: {},
-  actions: {
-    async fetchThreads({ state, commit }, meetupId) {
-      // commit("setItems", { resource: "threads", items: {} }, { root: true });
-      await axios.get(`/api/v1/threads?meetupId=${meetupId}`).then((res) => {
-        const threads = res.data;
-        commit(
-          "setItems",
-          { resource: "threads", items: threads },
-          { root: true }
-        );
-        return state.items;
-      });
-    },
-  },
-  mutations: {},
-};
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  meetup: { type: Schema.Types.ObjectId, ref: "Meetup" },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
+  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+});
+
+module.exports = mongoose.model("Thread", threadSchema);

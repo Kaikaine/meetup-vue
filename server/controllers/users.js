@@ -30,6 +30,7 @@ exports.register = function(req, res) {
     return res.status(422).json({
       errors: {
         email: "is required",
+        message: "Email is required",
       },
     });
   }
@@ -38,6 +39,7 @@ exports.register = function(req, res) {
     return res.status(422).json({
       errors: {
         password: "is required",
+        message: "Password is required",
       },
     });
   }
@@ -46,6 +48,7 @@ exports.register = function(req, res) {
     return res.status(422).json({
       errors: {
         password: "is not the same as confirmation password",
+        message: "Password is not the same as confirmation password",
       },
     });
   }
@@ -68,6 +71,7 @@ exports.login = function(req, res, next) {
     return res.status(422).json({
       errors: {
         email: "is required",
+        message: "Email is required",
       },
     });
   }
@@ -76,6 +80,7 @@ exports.login = function(req, res, next) {
     return res.status(422).json({
       errors: {
         password: "is required",
+        message: "Password is required",
       },
     });
   }

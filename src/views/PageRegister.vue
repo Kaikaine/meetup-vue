@@ -160,9 +160,9 @@
 <script>
 import {
   required,
+  email,
   minLength,
   url,
-  email,
   sameAs,
 } from "vuelidate/lib/validators";
 import { supportedFileType } from "@/helpers/validators";
@@ -210,11 +210,7 @@ export default {
       this.$v.form.$touch();
       this.$store
         .dispatch("auth/registerUser", this.form)
-        .then(() => {
-          this.$router.push({
-            path: "/login",
-          });
-        })
+        .then(() => this.$router.push("/login"))
         .catch((errMessage) => {
           this.$toasted.error(errMessage, { duration: 5000 });
         });
