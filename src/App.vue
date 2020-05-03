@@ -1,10 +1,9 @@
 <template>
-  <div id="app">
+  <div v-if="isAuthResolved" id="app">
     <TheNavBar />
     <div class="page-wrapper">
       <router-view />
     </div>
-
     <TheFooter />
   </div>
 </template>
@@ -17,6 +16,11 @@ export default {
   components: {
     TheNavBar,
     TheFooter,
+  },
+  computed: {
+    isAuthResolved() {
+      return this.$store.state.auth.isAuthResolved;
+    },
   },
   created() {
     this.$store.dispatch("auth/getAuthUser");
@@ -32,6 +36,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+.page-wrapper {
+  min-height: 55vh;
 }
 .bold {
   font-weight: bold;
