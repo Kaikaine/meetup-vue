@@ -35,6 +35,12 @@ mongoose
   .catch((err) => console.log(err));
 
 const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, { pingTimeout: 60000 });
+
+io.on("connection", function(socket) {
+  console.log("connection has been established");
+});
 
 app.use(bodyParser.json());
 
@@ -57,6 +63,6 @@ app.use("/api/v1/categories", categoriesRoutes);
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, function() {
+server.listen(PORT, function() {
   console.log("App is running on port: " + PORT);
 });
