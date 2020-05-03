@@ -13,6 +13,7 @@
               <div class="field">
                 <div class="control">
                   <input
+                    @blur="$v.form.email.$touch()"
                     v-model="form.email"
                     class="input is-large"
                     type="email"
@@ -32,6 +33,7 @@
               <div class="field">
                 <div class="control">
                   <input
+                    @blur="$v.form.password.$touch()"
                     v-model="form.password"
                     class="input is-large"
                     type="password"
@@ -48,6 +50,7 @@
               </div>
               <button
                 @click.prevent="login"
+                :disabled="isFormInvalid"
                 class="button is-block is-info is-large is-fullwidth"
               >Login</button>
             </form>
@@ -83,6 +86,11 @@ export default {
       password: {
         required
       }
+    }
+  },
+  computed: {
+    isFormInvalid() {
+      return this.$v.form.$invalid;
     }
   },
   methods: {
