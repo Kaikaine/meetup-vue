@@ -5,6 +5,7 @@
       <span class="subtitle">New York, US</span>
       <a>(change location)</a>
       <input @input="emitFormData"
+             @blur="$v.form.location.$touch()"
              v-model="form.location"
              type="text"
              class="input">
@@ -27,12 +28,12 @@
     },
     validations: {
       form: {
-        location: required
+        location: {required}
       }
     },
     methods: {
       emitFormData () {
-        this.$emit('stepUpdated', this.form)
+        this.$emit('stepUpdated', {data: this.form, isValid: !this.$v.$invalid})
       }
     }
   }
