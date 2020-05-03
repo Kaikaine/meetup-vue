@@ -16,8 +16,11 @@ export default {
   name: "app",
   components: {
     TheNavBar,
-    TheFooter
-  }
+    TheFooter,
+  },
+  created() {
+    this.$store.dispatch("auth/getAuthUser");
+  },
 };
 </script>
 

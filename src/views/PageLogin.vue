@@ -13,12 +13,12 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.email.$touch()"
                     v-model="form.email"
+                    @blur="$v.form.email.$touch()"
                     class="input is-large"
                     type="email"
                     placeholder="Your Email"
-                    autofocus
+                    autofocus=""
                     autocomplete="email"
                   />
                   <div v-if="$v.form.email.$error" class="form-error">
@@ -34,8 +34,8 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.password.$touch()"
                     v-model="form.password"
+                    @blur="$v.form.password.$touch()"
                     class="input is-large"
                     type="password"
                     placeholder="Your Password"
@@ -61,7 +61,8 @@
           </div>
           <p class="has-text-grey">
             <a>Sign In With Google</a> &nbsp;·&nbsp;
-            <a>Sign Up</a> &nbsp;·&nbsp;
+            <router-link :to="{ name: 'PageRegister' }">Sign Up</router-link>
+            &nbsp;·&nbsp;
             <a href="../">Need Help?</a>
           </p>
         </div>
@@ -71,9 +72,8 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required, email } from "vuelidate/lib/validators";
 export default {
-  name: "PageLogin",
   data() {
     return {
       form: {
@@ -86,6 +86,7 @@ export default {
     form: {
       email: {
         required,
+        email,
       },
       password: {
         required,

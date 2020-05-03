@@ -13,8 +13,8 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.username.$touch()"
                     v-model="form.username"
+                    @blur="$v.form.username.$touch()"
                     class="input is-large"
                     type="text"
                     placeholder="Username"
@@ -31,8 +31,8 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.name.$touch()"
                     v-model="form.name"
+                    @blur="$v.form.name.$touch()"
                     class="input is-large"
                     type="text"
                     placeholder="Name"
@@ -47,8 +47,8 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.email.$touch()"
                     v-model="form.email"
+                    @blur="$v.form.email.$touch()"
                     class="input is-large"
                     type="email"
                     placeholder="Your Email"
@@ -59,6 +59,23 @@
                     >
                     <span v-if="!$v.form.email.email" class="help is-danger"
                       >Email address is not valid</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input
+                    v-model="form.avatar"
+                    @blur="$v.form.avatar.$touch()"
+                    class="input is-large"
+                    type="text"
+                    placeholder="Avatar"
+                    autocomplete=""
+                  />
+                  <div v-if="$v.form.avatar.$error" class="form-error">
+                    <span v-if="!$v.form.avatar.url" class="help is-danger"
+                      >Url format is not valid!</span
                     >
                     <span
                       v-if="!$v.form.avatar.supportedFileType"
@@ -71,25 +88,8 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.avatar.$touch()"
-                    v-model="form.avatar"
-                    class="input is-large"
-                    type="text"
-                    placeholder="Avatar"
-                    autocomplete
-                  />
-                  <div v-if="$v.form.avatar.$error" class="form-error">
-                    <span v-if="!$v.form.avatar.url" class="help is-danger"
-                      >Url format is not valid!</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="field">
-                <div class="control">
-                  <input
-                    @blur="$v.form.password.$touch()"
                     v-model="form.password"
+                    @blur="$v.form.password.$touch()"
                     class="input is-large"
                     type="password"
                     placeholder="Your Password"
@@ -112,8 +112,8 @@
               <div class="field">
                 <div class="control">
                   <input
-                    @blur="$v.form.passwordConfirmation.$touch()"
                     v-model="form.passwordConfirmation"
+                    @blur="$v.form.passwordConfirmation.$touch()"
                     class="input is-large"
                     type="password"
                     placeholder="Password Confirmation"
@@ -147,8 +147,8 @@
             </form>
           </div>
           <p class="has-text-grey">
-            <a href="../">Login</a> &nbsp;·&nbsp;
-            <a>Sign Up With Google</a> &nbsp;·&nbsp;
+            <router-link :to="{ name: 'PageLogin' }">Login</router-link>
+            &nbsp;·&nbsp; <a>Sign Up With Google</a> &nbsp;·&nbsp;
             <a href="../">Need Help?</a>
           </p>
         </div>
@@ -160,14 +160,13 @@
 <script>
 import {
   required,
-  email,
   minLength,
   url,
+  email,
   sameAs,
 } from "vuelidate/lib/validators";
 import { supportedFileType } from "@/helpers/validators";
 export default {
-  name: "PageRegister",
   data() {
     return {
       form: {
@@ -183,10 +182,10 @@ export default {
   validations: {
     form: {
       username: {
-        required,
+        // required
       },
       name: {
-        required,
+        // required
       },
       email: {
         required,
@@ -211,8 +210,14 @@ export default {
       this.$v.form.$touch();
       this.$store
         .dispatch("auth/registerUser", this.form)
-        .then(() => this.$router.push("/login"))
-        .catch((err) => console.log(err));
+        .then(() => {
+          this.$router.push({
+            path: "/login",
+          });
+        })
+        .catch((errMessage) => {
+          this.$toasted.error(errMessage, { duration: 5000 });
+        });
     },
   },
 };

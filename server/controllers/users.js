@@ -11,6 +11,18 @@ exports.getUsers = function(req, res) {
   });
 };
 
+exports.getCurrentUser = function(req, res, next) {
+  const user = req.user;
+
+  if (!user) {
+    return res.sendStatus(422);
+  }
+
+  // For Session Auth!
+  // return res.json(user);
+  return res.json(user.toAuthJSON());
+};
+
 exports.register = function(req, res) {
   const registerData = req.body;
 
