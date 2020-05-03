@@ -3,7 +3,7 @@
     <div class="content has-text-centered">
       <p>
         <strong>VueMeetuper</strong> by
-        <a href="https://jgthms.com">Filip Jerga</a>. The source code is licensed.
+        <a href="https://kairidotdev.herokuapp.com/">Kairi Breckenridge</a>
       </p>
     </div>
   </footer>
@@ -13,5 +13,4 @@
 export default {};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
