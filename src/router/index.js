@@ -1,51 +1,69 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-import PageHome from "@/views/PageHome.vue";
-import PageMeetupDetail from "@/views/PageMeetupDetail.vue";
+import Router from "vue-router";
+import store from "@/store";
+
+import PageHome from "@/views/PageHome";
+import PageMeetupDetail from "@/views/PageMeetupDetail";
 import PageMeetupFind from "@/views/PageMeetupFind";
-import _PageNotFound from "@/views/_PageNotFound";
 import PageLogin from "@/views/PageLogin";
 import PageRegister from "@/views/PageRegister";
+import PageSecret from "@/views/PageSecret";
+import PageNotFound from "@/views/_PageNotFound";
+import PageNotAuthenticated from "@/views/PageNotAuthenticated";
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-const routes = [
-  {
-    path: "/",
-    name: "PageHome",
-    component: PageHome,
-  },
-  {
-    path: "/find",
-    name: "PageMeetupFind",
-    component: PageMeetupFind,
-  },
-  {
-    path: "/meetups/:id",
-    name: "PageMeetupDetail",
-    component: PageMeetupDetail,
-  },
-  {
-    path: "/login/",
-    name: "PageLogin",
-    component: PageLogin,
-  },
-  {
-    path: "/register/",
-    name: "PageRegister",
-    component: PageRegister,
-  },
-  {
-    path: "*",
-    name: "PageNotFound",
-    component: _PageNotFound,
-  },
-];
-
-const router = new VueRouter({
+const router = new Router({
+  routes: [
+    {
+      path: "/",
+      name: "PageHome",
+      component: PageHome,
+    },
+    {
+      path: "/find",
+      name: "PageMeetupFind",
+      component: PageMeetupFind,
+    },
+    {
+      path: "/meetups/secret",
+      name: "PageSecret",
+      component: PageSecret,
+      beforeEnter(to, from, next) {
+        if (store.getters["auth/isAuthenticated"]) {
+          next();
+        } else {
+          next({ name: "PageNotAuthenticated" });
+        }
+      },
+    },
+    {
+      path: "/meetups/:id",
+      name: "PageMeetupDetail",
+      component: PageMeetupDetail,
+    },
+    {
+      path: "/login",
+      name: "PageLogin",
+      component: PageLogin,
+    },
+    {
+      path: "/register",
+      name: "PageRegister",
+      component: PageRegister,
+    },
+    {
+      path: "/401",
+      name: "PageNotAuthenticated",
+      component: PageNotAuthenticated,
+    },
+    {
+      path: "*",
+      name: "PageNotFound",
+      component: PageNotFound,
+    },
+  ],
   mode: "history",
-  base: process.env.BASE_URL,
-  routes,
 });
 
 export default router;
