@@ -3,6 +3,7 @@
   <form class="post-create">
     <div class="field">
       <textarea
+        v-auto-expand
         class="textarea textarea-post"
         placeholder="Write a post"
         rows="1"
@@ -13,9 +14,9 @@
 </template>
 
 <script>
-import withWarning from "@/directives/withWarning";
+import autoExpand from "@/directives/autoExpand";
 export default {
-  directives: { withWarning },
+  directives: { autoExpand },
 };
 </script>
 
