@@ -1,17 +1,40 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import axios from "axios";
+import axiosInstance from "@/services/axios";
 
-const threadSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    maxlength: [512, "Too long, max is 512 characters"],
+export default {
+  namespaced: true,
+
+  state: {
+    items: [],
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-  meetup: { type: Schema.Types.ObjectId, ref: "Meetup" },
-  user: { type: Schema.Types.ObjectId, ref: "User" },
-  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
-});
+  actions: {
+    fetchThreads({ state, commit }, meetupId) {
+      return axios.get(`/api/v1/threads?meetupId=${meetupId}`).then((res) => {
+        const threads = res.data;
+        commit(
+          "setItems",
+          { resource: "threads", items: threads },
+          { root: true }
+        );
+        return state.items;
+      });
+    },
+    postThread({ commit, state }, { title, meetupId }) {
+      const thread = {};
+      thread.title = title;
+      thread.meetup = meetupId;
 
-module.exports = mongoose.model("Thread", threadSchema);
+      return axiosInstance.post("/api/v1/threads", thread).then((res) => {
+        const createdThread = res.data;
+        const index = state.items.length;
+
+        commit(
+          "addItemToArray",
+          { item: createdThread, index, resource: "threads" },
+          { root: true }
+        );
+        return createdThread;
+      });
+    },
+  },
+};
