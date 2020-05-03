@@ -56,6 +56,10 @@
                       v-if="!$v.form.email.email"
                       class="help is-danger"
                     >Email address is not valid</span>
+                    <span
+                      v-if="!$v.form.avatar.supportedFileType"
+                      class="help is-danger"
+                    >Selected file type is not valid!</span>
                   </div>
                 </div>
               </div>
@@ -144,6 +148,7 @@ import {
   url,
   sameAs
 } from "vuelidate/lib/validators";
+import { supportedFileType } from "@/helpers/validators";
 export default {
   name: "PageRegister",
   data() {
@@ -171,7 +176,8 @@ export default {
         email
       },
       avatar: {
-        url
+        url,
+        supportedFileType
       },
       password: {
         required,
