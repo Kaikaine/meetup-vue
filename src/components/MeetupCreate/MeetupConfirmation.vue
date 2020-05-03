@@ -19,7 +19,7 @@
         <span class="result-title">
           Start Date
         </span>
-        <p>{{ meetupToCreate.startDate }}</p>
+        <p>{{ meetupToCreate.startDate | formatDate }}</p>
       </div>
       <div>
         <span class="result-title">
@@ -78,6 +78,7 @@ export default {
   font-size: 29px;
   font-weight: bold;
 }
+
 .result-title + p {
   font-size: 20px;
 }

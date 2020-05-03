@@ -2,15 +2,15 @@ import axios from "axios";
 
 export default {
   namespaced: true,
+
   state: {
-    item: {},
     items: [],
+    item: {},
   },
-  getters: {},
   actions: {
-    async fetchMeetups({ state, commit }) {
-      commit("setItems", { resource: "meetups", items: {} }, { root: true });
-      await axios.get("api/v1/meetups").then((res) => {
+    fetchMeetups({ state, commit }) {
+      commit("setItems", { resource: "meetups", items: [] }, { root: true });
+      return axios.get("/api/v1/meetups").then((res) => {
         const meetups = res.data;
         commit(
           "setItems",
@@ -20,9 +20,9 @@ export default {
         return state.items;
       });
     },
-    async fetchMeetupById({ state, commit }, meetupId) {
+    fetchMeetupById({ state, commit }, meetupId) {
       commit("setItem", { resource: "meetups", item: {} }, { root: true });
-      await axios.get(`/api/v1/meetups/${meetupId}`).then((res) => {
+      return axios.get(`/api/v1/meetups/${meetupId}`).then((res) => {
         const meetup = res.data;
         commit(
           "setItem",
@@ -32,6 +32,9 @@ export default {
         return state.item;
       });
     },
+    createMeetup(context, meetupToCreate) {
+      // Make a request to API to create meetup
+      console.log(meetupToCreate);
+    },
   },
-  mutations: {},
 };
