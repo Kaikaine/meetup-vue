@@ -1,4 +1,5 @@
 <template>
+  <!-- <div v-with-warning:red.prevent="'What a nice day (:'"> </div> -->
   <form class="post-create">
     <div class="field">
       <textarea
@@ -12,7 +13,10 @@
 </template>
 
 <script>
-export default {};
+import withWarning from "@/directives/withWarning";
+export default {
+  directives: { withWarning },
+};
 </script>
 
 <style scoped lang="scss">
