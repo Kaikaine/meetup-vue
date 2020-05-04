@@ -1,5 +1,5 @@
 module.exports = {
-  DB_URI: "mongodb://kairi:kairi123@ds227525.mlab.com:27525/vue-meetup",
-  SESSION_SECRET: "nfadwsijfhdsa8fh7",
-  JWT_SECRET: "aeygeadf6adaagds",
+  DB_URI: process.env.DB_URI,
+  SESSION_SECRET: process.env.SESSION_SECRET,
+  JWT_SECRET: process.env.JWT_SECRET,
 };

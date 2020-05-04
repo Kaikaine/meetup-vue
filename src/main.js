@@ -19,7 +19,7 @@ Vue.component("AppSpinner", AppSpinner);
 
 Vue.use(vuelidate);
 Vue.use(Toasted);
-Vue.use(AppSocket, { connection: "http://localhost:3001" });
+Vue.use(AppSocket, { connection: process.env.VUE_APP_URI });
 
 filters();
 
