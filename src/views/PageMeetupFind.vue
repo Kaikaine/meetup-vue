@@ -9,6 +9,7 @@
               <div class="level-item">
                 <input
                   v-model="searchedLocation"
+                  @keyup.enter="fetchMeetups"
                   type="text"
                   class="input"
                   placeholder="New York"
@@ -33,7 +34,10 @@
     </div>
     <div class="container">
       <section class="section page-find">
-        <div class="columns cover is-multiline">
+        <div
+          v-if="meetups && meetups.length > 0"
+          class="columns cover is-multiline"
+        >
           <div
             v-for="meetup of meetups"
             :key="meetup._id"
@@ -73,7 +77,7 @@
             </router-link>
           </div>
         </div>
-        <div>
+        <div v-else>
           <span class="tag is-warning is-large"
             >No meetups found :( You might try to change search criteria
             (:</span
@@ -89,6 +93,7 @@ export default {
   data() {
     return {
       searchedLocation: this.$store.getters["meta/location"],
+      filter: {},
     };
   },
   computed: {
@@ -97,7 +102,19 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("meetups/fetchMeetups");
+    this.fetchMeetups();
+  },
+  methods: {
+    fetchMeetups() {
+      if (this.searchedLocation) {
+        this.filter["location"] = this.searchedLocation
+          .toLowerCase()
+          .replace(/[\s,]+/g, "")
+          .trim();
+      }
+
+      this.$store.dispatch("meetups/fetchMeetups", { filter: this.filter });
+    },
   },
 };
 </script>
