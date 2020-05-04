@@ -7,10 +7,18 @@
           <div class="level">
             <div class="level-left">
               <div class="level-item">
-                <input type="text" class="input" placeholder="New York" />
+                <input
+                  v-model="searchedLocation"
+                  type="text"
+                  class="input"
+                  placeholder="New York"
+                />
               </div>
-              <div class="level-item">
-                <span>Meetups in New York, USA</span>
+              <div
+                v-if="searchedLocation && meetups && meetups.length > 0"
+                class="level-item"
+              >
+                <span>Meetups in {{ meetups[0].location }}</span>
               </div>
             </div>
             <div class="level-right">
@@ -30,35 +38,46 @@
             v-for="meetup of meetups"
             :key="meetup._id"
             class="column is-one-third"
-            :style="{'min-height': '160px'}"
+            :style="{ 'min-height': '160px' }"
           >
             <router-link
               :to="'/meetups/' + meetup._id"
               class="meetup-card-find"
               href="#"
-              :style="{'background-image': `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${meetup.image})`}"
+              :style="{
+                'background-image': `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${meetup.image})`,
+              }"
             >
               <div class="meetup-card-find-content">
                 <div class="meetup-card-find-content-date is-pulled-right">
-                  <span class="month">{{meetup.startDate | formatDate('MMM')}}</span>
-                  <span class="day">{{meetup.startDate | formatDate('D')}}</span>
+                  <span class="month">{{
+                    meetup.startDate | formatDate("MMM")
+                  }}</span>
+                  <span class="day">{{
+                    meetup.startDate | formatDate("D")
+                  }}</span>
                 </div>
                 <div class="meetup-card-find-content-info">
-                  <p class="title is-4 no-padding is-marginless m-b-xs">{{meetup.title}}</p>
-                  <span class="tag is-success m-b-xs">{{meetup.category.name | capitalize}}</span>
-                  <p class="subtitle is-7">{{meetup.location}}</p>
+                  <p class="title is-4 no-padding is-marginless m-b-xs">
+                    {{ meetup.title }}
+                  </p>
+                  <span class="tag is-success m-b-xs">{{
+                    meetup.category.name | capitalize
+                  }}</span>
+                  <p class="subtitle is-7">{{ meetup.location }}</p>
                 </div>
                 <div class="meetup-card-find-interest">
-                  <p class="subtitle is-7">{{meetup.joinedPeopleCount}}</p>
+                  <p class="subtitle is-7">{{ meetup.joinedPeopleCount }}</p>
                 </div>
               </div>
             </router-link>
           </div>
         </div>
         <div>
-          <span
-            class="tag is-warning is-large"
-          >No meetups found :( You might try to change search criteria (:</span>
+          <span class="tag is-warning is-large"
+            >No meetups found :( You might try to change search criteria
+            (:</span
+          >
         </div>
       </section>
     </div>
@@ -67,15 +86,19 @@
 
 <script>
 export default {
-  name: "PageMeetupFind",
+  data() {
+    return {
+      searchedLocation: this.$store.getters["meta/location"],
+    };
+  },
   computed: {
     meetups() {
       return this.$store.state.meetups.items;
-    }
+    },
   },
   created() {
     this.$store.dispatch("meetups/fetchMeetups");
-  }
+  },
 };
 </script>
 
@@ -96,6 +119,7 @@ export default {
   background-position: 50% 20%;
   border: 1px solid rgba(0, 0, 0, 0.12);
   -webkit-tap-highlight-color: transparent;
+
   &-interest {
     position: absolute;
     bottom: 12px;
@@ -104,24 +128,30 @@ export default {
       font-weight: bold;
     }
   }
+
   .title {
     color: white;
   }
+
   .subtitle {
     color: white;
   }
+
   &-content {
     &-date {
       margin: 10px;
+
       width: 70px;
       text-align: center;
       border-radius: 50%;
+
       .day {
         display: block;
         font-size: 21px;
         color: white;
         font-weight: bold;
       }
+
       .month {
         display: block;
         color: #ff5050;
@@ -130,6 +160,7 @@ export default {
         margin-bottom: -5px;
       }
     }
+
     &-info {
       position: absolute;
       bottom: 0;
@@ -139,6 +170,7 @@ export default {
     }
   }
 }
+
 .text-overlay-wrapper {
   position: absolute;
   width: 100%;
@@ -146,9 +178,11 @@ export default {
   left: 0;
   top: 0;
 }
+
 .lookup-prebody {
   position: relative;
 }
+
 .meetup-lookup {
   width: 960px;
   margin: 0 auto;
@@ -156,6 +190,7 @@ export default {
   padding: 20px;
   color: white;
 }
+
 .meetup-lookup-wrap {
   width: 100%;
   z-index: 2;

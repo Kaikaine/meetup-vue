@@ -4,6 +4,7 @@ export default {
   namespaced: true,
 
   state: {
+    isLocationResolved: false,
     item: {
       city: "",
       country: "",
@@ -17,11 +18,24 @@ export default {
   },
   actions: {
     fetchMetaData({ commit, state }) {
-      return axios.get("/api/v1").then((res) => {
-        const meta = res.data;
-        commit("setItem", { item: meta, resource: "meta" }, { root: true });
-        return meta;
-      });
+      console.log(state);
+      return axios
+        .get("/api/v1")
+        .then((res) => {
+          const meta = res.data;
+          commit("setItem", { item: meta, resource: "meta" }, { root: true });
+          commit("resolveLocation", true);
+          return meta;
+        })
+        .catch((err) => {
+          commit("resolveLocation", true);
+          return err;
+        });
+    },
+  },
+  mutations: {
+    resolveLocation(state, isLocationResolved) {
+      state.isLocationResolved = isLocationResolved;
     },
   },
 };
