@@ -8,6 +8,7 @@ import PageMeetupFind from "@/views/PageMeetupFind";
 import PageProfile from "@/views/PageProfile";
 import PageMeetupCreate from "@/views/PageMeetupCreate";
 import PageLogin from "@/views/PageLogin";
+import PageMeetupEdit from "@/views/PageMeetupEdit";
 import PageRegister from "@/views/PageRegister";
 import PageSecret from "@/views/PageSecret";
 import PageNotFound from "@/views/_PageNotFound";
@@ -55,6 +56,13 @@ const router = new Router({
       path: "/meetups/:id",
       name: "PageMeetupDetail",
       component: PageMeetupDetail,
+    },
+    {
+      path: "/meetups/:meetupId/edit",
+      name: "PageMeetupEdit",
+      component: PageMeetupEdit,
+      meta: { onlyAuthUser: true },
+      props: true,
     },
     {
       path: "/login",
