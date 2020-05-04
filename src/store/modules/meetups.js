@@ -13,7 +13,6 @@ export default {
   actions: {
     fetchMeetups({ state, commit }, options = {}) {
       commit("setItems", { resource: "meetups", items: [] }, { root: true });
-
       const url = applyFilters("/api/v1/meetups", options.filter);
 
       return axios.get(url).then((res) => {
@@ -50,6 +49,7 @@ export default {
         .then((res) => res.data);
     },
     joinMeetup({ state, rootState, commit, dispatch }, meetupId) {
+      // We were just debugging in this lecture (:
       const user = rootState.auth.user;
 
       return axiosInstance.post(`/api/v1/meetups/${meetupId}/join`).then(() => {
@@ -76,10 +76,26 @@ export default {
           commit("addUsersToMeetup", joinedPeople);
         });
     },
+    updateMeetup({ commit, state }, meetupData) {
+      meetupData.processedLocation = meetupData.location
+        .toLowerCase()
+        .replace(/[\s,]+/g, "")
+        .trim();
+      return axiosInstance
+        .patch(`/api/v1/meetups/${meetupData._id}`, meetupData)
+        .then((res) => {
+          const updatedMeetup = res.data;
+          commit("mergeMeetup", updatedMeetup);
+          return state.item;
+        });
+    },
   },
   mutations: {
     addUsersToMeetup(state, joinedPeople) {
       Vue.set(state.item, "joinedPeople", joinedPeople);
+    },
+    mergeMeetup(state, updatedMeetup) {
+      state.item = { ...state.item, ...updatedMeetup };
     },
   },
 };

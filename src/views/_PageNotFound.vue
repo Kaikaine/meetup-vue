@@ -14,8 +14,8 @@ import ErrorView from "@/components/ErrorView";
 export default {
   name: "PageNotFound",
   components: {
-    ErrorView
-  }
+    ErrorView,
+  },
 };
 </script>
 
