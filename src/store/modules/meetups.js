@@ -1,85 +1,105 @@
-import Vue from "vue";
-import axios from "axios";
-import axiosInstance from "@/services/axios";
-import { applyFilters } from "@/helpers";
+const Meetup = require("../models/meetups");
+const User = require("../models/users");
 
-export default {
-  namespaced: true,
+exports.getSecret = function(req, res) {
+  return res.json({ secret: "I am secret Message" });
+};
 
-  state: {
-    items: [],
-    item: {},
-  },
-  actions: {
-    fetchMeetups({ state, commit }, options = {}) {
-      commit("setItems", { resource: "meetups", items: [] }, { root: true });
+exports.getMeetups = function(req, res) {
+  const { category, location } = req.query;
 
-      const url = applyFilters("/api/v1/meetups", options.filter);
+  const findQuery = location
+    ? Meetup.find({ processedLocation: { $regex: ".*" + location + ".*" } })
+    : Meetup.find({});
+  findQuery
+    .populate("category")
+    .populate("joinedPeople")
+    .limit(5)
+    .sort({ createdAt: -1 })
+    .exec((errors, meetups) => {
+      if (errors) {
+        return res.status(422).send({ errors });
+      }
 
-      return axios.get(url).then((res) => {
-        const meetups = res.data;
-        commit(
-          "setItems",
-          { resource: "meetups", items: meetups },
-          { root: true }
-        );
-        return state.items;
-      });
-    },
-    fetchMeetupById({ state, commit }, meetupId) {
-      commit("setItem", { resource: "meetups", item: {} }, { root: true });
-      return axios.get(`/api/v1/meetups/${meetupId}`).then((res) => {
-        const meetup = res.data;
-        commit(
-          "setItem",
-          { resource: "meetups", item: meetup },
-          { root: true }
-        );
-        return state.item;
-      });
-    },
-    createMeetup({ rootState }, meetupToCreate) {
-      meetupToCreate.meetupCreator = rootState.auth.user;
-      meetupToCreate.processedLocation = meetupToCreate.location
-        .toLowerCase()
-        .replace(/[\s,]+/g, "")
-        .trim();
-
-      return axiosInstance
-        .post("/api/v1/meetups", meetupToCreate)
-        .then((res) => res.data);
-    },
-    joinMeetup({ state, rootState, commit, dispatch }, meetupId) {
-      const user = rootState.auth.user;
-
-      return axiosInstance.post(`/api/v1/meetups/${meetupId}/join`).then(() => {
-        dispatch("auth/addMeetupToAuthUser", meetupId, { root: true });
-
-        const joinedPeople = state.item.joinedPeople;
-        commit("addUsersToMeetup", [...joinedPeople, user]);
-        return true;
-      });
-    },
-    leaveMeetup({ state, rootState, commit, dispatch }, meetupId) {
-      const user = rootState.auth.user;
-
-      return axiosInstance
-        .post(`/api/v1/meetups/${meetupId}/leave`)
-        .then(() => {
-          dispatch("auth/removeMeetupFromAuthUser", meetupId, { root: true });
-
-          const joinedPeople = state.item.joinedPeople;
-          const index = joinedPeople.findIndex(
-            (jUser) => jUser._id === user._id
-          );
-          joinedPeople.splice(index, 1);
-          commit("addUsersToMeetup", joinedPeople);
+      // WARNING: requires improvement, can decrease performance
+      if (category) {
+        meetups = meetups.filter((meetup) => {
+          return meetup.category.name === category;
         });
-    },
-  },
-  mutations: {
-    addUsersToMeetup(state, joinedPeople) {
-      Vue.set(state.item, "joinedPeople", joinedPeople);
-    },
-  },
+      }
+
+      return res.json(meetups);
+    });
+};
+
+exports.getMeetupById = function(req, res) {
+  const { id } = req.params;
+
+  Meetup.findById(id)
+    .populate("meetupCreator", "name id avatar")
+    .populate("category")
+    .populate({
+      path: "joinedPeople",
+      options: { limit: 5, sort: { username: -1 } },
+    })
+    .exec((errors, meetup) => {
+      if (errors) {
+        return res.status(422).send({ errors });
+      }
+
+      return res.json(meetup);
+    });
+};
+
+exports.createMeetup = function(req, res) {
+  const meetupData = req.body;
+  const user = req.user;
+
+  const meetup = new Meetup(meetupData);
+  meetup.user = user;
+  meetup.status = "active";
+
+  meetup.save((errors, createdMeetup) => {
+    if (errors) {
+      return res.status(422).send({ errors });
+    }
+
+    return res.json(createdMeetup);
+  });
+};
+
+exports.joinMeetup = function(req, res) {
+  const user = req.user;
+  const { id } = req.params;
+
+  Meetup.findById(id, (errors, meetup) => {
+    if (errors) {
+      return res.status(422).send({ errors });
+    }
+
+    meetup.joinedPeople.push(user);
+    meetup.joinedPeopleCount++;
+
+    return Promise.all([
+      meetup.save(),
+      User.updateOne({ _id: user.id }, { $push: { joinedMeetups: meetup } }),
+    ])
+      .then(() => res.json({ id }))
+      .catch((errors) => res.status(422).send({ errors }));
+  });
+};
+
+exports.leaveMeetup = function(req, res) {
+  const user = req.user;
+  const { id } = req.params;
+
+  Promise.all([
+    Meetup.updateOne(
+      { _id: id },
+      { $pull: { joinedPeople: user.id }, $inc: { joinedPeopleCount: -1 } }
+    ),
+    User.updateOne({ _id: user.id }, { $pull: { joinedMeetups: id } }),
+  ])
+    .then(() => res.json({ id }))
+    .catch((errors) => res.status(422).send({ errors }));
 };
