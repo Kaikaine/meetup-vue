@@ -22,21 +22,27 @@ export default {
       return this.$store.state.auth.isAuthResolved;
     },
   },
+  created() {
+    this.$store.dispatch("meta/fetchMetaData");
+  },
 };
 </script>
 
 <style lang="scss">
 @import "assets/css/spacing.css";
 @import "~bulma/bulma.sass";
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
 .page-wrapper {
   min-height: 55vh;
 }
+
 .bold {
   font-weight: bold;
 }
